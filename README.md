@@ -58,6 +58,8 @@ And now I will attempt to tell you how it works even though I can barely read.
 >[!WARNING]
 >Don't use this as a cheat sheet, it could be wrong, I'm not good at reading. Yes, I did type all this but I have a child that spews WiFi passwords, and they are enjoying life!
 
+The problem with the handshake is that the first 2 handshakes are what spawn the PMK, which is great because realistcally we only need half the handshakes, perfect for our weak signal.
+
 Once then you can take the PCAP out and use bruteforce attacks or use plugins to recover some passwords.
 
 ### Moods
@@ -171,4 +173,277 @@ There are tons of cases for the Pwnagotchi, or just the Raspberry Pi itself if y
 
 Once you got everything you need, time for...
 
-### Step 2) Flash the image
+## Step 2) Flash the image
+
+There are a few images out there, with the one I use is admittibly old. Version 1.5.5, but github user @jayofelony has been contantly been updating the project, thus earning Chad Status of being a parent to every script kiddies's favorite child, with the newest img file they have uploaded at the time of writing is 2.4.6, with Raspberry Pi 4 compatibility. I have provided both files mention in the repo. 
+
+Next we need the software to go to Google and search for 'Balena Etcher' **AND PLEASE NOTE THE LINK, BECAUSE THERES OFTEN SOMEONE PUTTING A SCAM LINK, AND GOOGLE IS HAPPY TO RECOMMMEND IT OVER THE ACTUAL LINK**
+
+>[!WARNING]
+> I HAVE FALLEN FOR THIS PLEASE BECAREFUL, USUALLY THEY ARE MARKED AS ADS, READ UNLIKE ME
+
+Once installed the software, this should be the software:
+![Balena Etcher](https://github.com/Cold-Syntax/Dumb-Down-Pwnagotchi-Guide/assets/85046345/977d919e-6ef9-42d2-91d2-0590753d72ba)
+
+Simply select the .img file you have choosen, then **PICK THE RIGHT STORAGE, AKA THE LITTLE SD CARD NOT YOUR MAIN TB EXPENSIVE HAVE IMPORTANT THINGS STORAGE!!!!!**
+
+>[!WARNING]
+> PLEASE CHOOSE THE RIGHT ONE, CHOOSING THE WRONG ONE WILL WIPE EVERYTHING OF SAID STORAGE AND REPLACE IT WITH THE .img FILE I PROMISE YOU DO NOT WANNA LOSE YOUR MINECRAFT SERVER
+
+Then once everything is selected **Correctly**, hit flash, and wait. You should have a little micro SD card ready, but you can't put it in just yet.
+
+## Step 3) Add somer personality
+
+You can use your default OS or use a software like Filezilla. What you need to do regardless is create the file *config.toml*. How to do that?
+
+1. cd or move into the following directories */etc/pwnagotchi/* and create the *config.toml* file. This is the main source of all customizations, or at least activating them. Once created copy and paste the following in your file:
+```
+main.name = "pwnagotchi"
+main.lang = "en"
+main.whitelist = [
+  "EXAMPLE_NETWORK",
+  "ANOTHER_EXAMPLE_NETWORK",
+  "fo:od:ba:be:fo:od",
+  "fo:od:ba"
+]
+
+main.plugins.grid.enabled = true
+main.plugins.grid.report = true
+main.plugins.grid.exclude = [
+  "YourHomeNetworkHere"
+]
+
+ui.display.enabled = true
+ui.display.type = "waveshare_2"
+ui.display.color = "black"
+
+personality.advertise = true
+personality.deauth = true
+```
+This will be the skeleton of everything, you can customize the name, the language \(Japanese requires *ui.font.name = "fonts-japanese-gothic"* to be added, simply add it to the bottom of the list\), to the type of display color if possible. Note the *main.whitelist* and the *main.plugins.grid.exclude* lists. You want to put your SSID, or the WiFi name you don't want pwned by your pwnagotchi. You can also use your ESSID but I have no idea how to find that.
+
+>[!NOTE]
+> See the pwnagotchi website to set your *ui.display.type* to the display you end up using
+>[!WARNING]
+>Deauthing devices is a legal grey area, so it's best to change *personality.deauth = true* to false. Don't worry, the software it use, bettercap, can just listen for handshakes, and it's just as good as deauthing.
+
+2. Once you wrote your *config.toml* file simply take it out, and put it in your raspberry. On the Raspberry Pi zero W there are two micro usb ports, the one closer to the end is your power port, but the port you need is the the one next to it, the data port
+
+![Ports](https://github.com/Cold-Syntax/Dumb-Down-Pwnagotchi-Guide/assets/85046345/6619ca7f-e351-4380-abea-29cba24bd63f)
+
+
+Plug it in, and **DO NOT REMOVE IT**. This is generating RSA keys, and removal of the cabel will corrupt everything. After 7-10 minutes, you need to assign it with the following
+   - IP) 10.0.0.1
+   - Netmask) 255.255.255.0
+   - Gateway) 10.0.0.1
+   - DNS) 8.8.8.8
+
+![Windows config](https://github.com/Cold-Syntax/Dumb-Down-Pwnagotchi-Guide/assets/85046345/309d4b34-2a21-445b-8b33-7481d0ae141c)
+
+
+>[!NOTE]
+> If nothing happens for a few minutes, check to see if your cable can even transfer data. If you can't then find one. 
+
+If you are on step two and can not configure or see the ethernet option on your windows machine, you may have not have the right drivers, [This website](https://cyberspacemanmike.com/product/rdnis-drivers-ethernet-over-usb-for-make-pwnagotchi-work/) sells it for free, and I know, sketchy but it works for me, and if you don't need it, don't install it. Simple. File can also be found in the repo.
+
+
+3. Use Filezillia or PuTTY to ssh into the pi.
+   - Host Name) pi@10.0.0.2
+   - Port) 22
+   - Password) raspberry
+
+Congrats on getting in your Pwnagotchi, now go change those passwords, you know basic linux lmao.
+
+>[!NOTE]
+> A good command to remember is *sudo systemctl restart pwnagotchi*. This will restart your pi, thus updating things, including changes you made
+
+## Step 4) Seeing your childs face
+
+There are a few ways to see the UI, so let's start with a few
+
+### Hardware
+
+Take out the usb and if you have a battery, carefully install the battery as to not damage both the battery or the pi. Usually there are instructions, but if not, Youtube.....
+
+After that, install the display. Usually it's a 'hat', or something you can place on the pins, but be sure to not bend the pins other wise you have to see a therapist instead when you see this...
+
+![Bent pins](https://github.com/Cold-Syntax/Dumb-Down-Pwnagotchi-Guide/assets/85046345/7b10ac3a-c5cf-4d7b-b2de-034d0fbc2521)
+
+Once you installed everything you can either turn on the battery or plug the usb in either ports. Power port will make the image more clear but for the tutorial, it's best to keep using the data port.
+
+### Bluetooth
+
+If you wish, you can connect to your phone via bluetooth, this is one way to use a Pwnagotchi without a screen but it will require you to add things in your *config.toml*.
+
+```
+main.plugins.bt-tether.enabled = false
+
+main.plugins.bt-tether.devices.android-phone.enabled = false          # the name of this entry is android-phone
+main.plugins.bt-tether.devices.android-phone.search_order = 1         # in which order the devices should
+                                                                      ## be searched. E.g. this is #1
+main.plugins.bt-tether.devices.android-phone.mac = ""                 # you need to put your phones
+                                                                      ## bt-mac here (settings > status)
+main.plugins.bt-tether.devices.android-phone.ip = "192.168.44.44"     # this is the static ip of your pwnagotchi
+                                                                      ## adjust this to your phones pan-network
+                                                                      ## (run "ifconfig bt-pan" on your phone)
+                                                                      ## if you feel lucky,
+                                                                      ## try: 192.168.44.44 (Android) or
+                                                                      ## 172.20.10.6 (iOS)
+                                                                      ## 44 is just an example, you can choose
+                                                                      ## between 2-254 (if netmask is 24)
+main.plugins.bt-tether.devices.android-phone.netmask = 24             # netmask of the PAN
+main.plugins.bt-tether.devices.android-phone.interval = 1             # in minutes, how often should
+                                                                      ## the device be searched
+main.plugins.bt-tether.devices.android-phone.scantime = 10            # in seconds, how long should be searched
+                                                                      ## on each interval
+main.plugins.bt-tether.devices.android-phone.max_tries = 10           # how many times it should try to find the
+                                                                      ## phone (0 = endless)
+main.plugins.bt-tether.devices.android-phone.share_internet = false   # set to true if you want to have
+                                                                      ## internet via bluetooth
+main.plugins.bt-tether.devices.android-phone.priority = 1             # the device with the highest
+                                                                      ## priority wins (1 = highest)
+
+main.plugins.bt-tether.devices.ios-phone.enabled = false          # the name of this entry is android-phone
+main.plugins.bt-tether.devices.ios-phone.search_order = 1         # in which order the devices should
+                                                                      ## be searched. E.g. this is #1
+main.plugins.bt-tether.devices.ios-phone.mac = ""                 # you need to put your phones
+                                                                      ## bt-mac here (settings > status)
+main.plugins.bt-tether.devices.ios-phone.ip = "172.20.10.6"     # this is the static ip of your pwnagotchi
+                                                                      ## adjust this to your phones pan-network
+                                                                      ## (run "ifconfig bt-pan" on your phone)
+                                                                      ## if you feel lucky,
+                                                                      ## try: 192.168.44.44 (Android) or
+                                                                      ## 172.20.10.6 (iOS)
+                                                                      ## 44 is just an example, you can choose
+                                                                      ## between 2-254 (if netmask is 24)
+main.plugins.bt-tether.devices.ios-phone.netmask = 24             # netmask of the PAN
+main.plugins.bt-tether.devices.android-phone.interval = 1             # in minutes, how often should
+                                                                      ## the device be searched
+main.plugins.bt-tether.devices.ios-phone.scantime = 10            # in seconds, how long should be searched
+                                                                      ## on each interval
+main.plugins.bt-tether.devices.ios-phone.max_tries = 10           # how many times it should try to find the
+                                                                      ## phone (0 = endless)
+main.plugins.bt-tether.devices.ios-phone.share_internet = false   # set to true if you want to have
+                                                                      ## internet via bluetooth
+main.plugins.bt-tether.devices.ios-phone.priority = 1             # the device with the highest
+                                                                      ## priority wins (1 = highest)
+```
+
+Simply copy and edit the code above in the *config.toml* and once a connection between your phone and pi is made, head to the ip in your browser to see it's face. This is also a good way to hide your pwnagotchi while it collects handshakes.
+
+### Browser/Computer
+
+To see your pwnagotchi on a browser in general you can go in your browser and enter 10.0.0.2:8080 to see it. The username and password for the website is *changeme*. If you wish to change them either paste the following in the *config.toml*:
+
+```
+ui.web.username = "my_new_username"
+ui.web.password = "my_new_password"
+```
+
+Or head into the plugins tabs and enable *webcfg.py* and restart your Pwnagotchi. Now you can go back to the website, head into the plugin tab, click on the *webcfg.py* newly made hyperlink, and now you can customize your built-in plugins.
+
+But what's a plugin?
+
+## Step 5) Plugins
+
+## Things to know
+
+So you got a plugins, a fancy case, and a new friend, what now. Well first there are some files to remember.
+
+- */etc/pwnagotchi/config.toml* where you put your custom configurations
+- */root/handshakes/* is where all your handshakes go
+
+It's also good to remember how to read at least the basic UI:
+
+![Basic UI](https://github.com/Cold-Syntax/Dumb-Down-Pwnagotchi-Guide/assets/85046345/d8121806-80b4-4a46-8f9d-bd868742c092)
+
+
+- CH: This displays the current channel the unit is operating on.
+  - When the unit is performing recon and hopping on all channels, it will display * instead of a number. It is gathering the number of APs on each channel when it is conducting recon. Recon signals the start of a new epoch.
+- APS: Number of access points on the current channel.
+  - The total visible access points across all channels (according to the last recon) is displayed in parentheses.
+- UP: The uptime of the unit, since its last reboot. It is displayed in hh:mm:ss format.
+- PWND: Number of handshakes captured during this current session.
+  - The number of unique networks your Pwnagotchi has eaten at least one handshake of, from the beginning of its life, is displayed in parentheses.
+  - The SSID of the latest network handshake your Pwnagotchi has acquired is displayed in brackets.
+- MODE: Mode indicates how Pwnagotchi is currently functioning. See above for more info about modes.
+  - MANU: This appears when the unit is running in MANUAL mode, which is triggered when you start up your unit with the USB network cable connected.
+    - This mode is good for updating and backing up your unit and using bettercap’s web UI.
+    - Pwnagotchi does NOT sniff or capture handshakes when it is in MANUAL mode.
+    - Stuck in MANUAL mode? Turn on the unit without the USB network cable connected.
+  - AUTO: This indicates that the Pwnagotchi algorithm is running in AUTOMATIC mode, with AI disabled (or still loading).
+    - Pwnagotchi will still sniff and capture handshakes in this mode; it is mostly functional—the primary difference between AUTO and AI mode is its actions are being determined by a static algorithm instead of the AI deciding what the Pwnagotchi should do for optimal pwnage.
+    - This disappears once the AI dependencies have been bootstrapped and the neural network has finished loading. (On a RPi0W, this process takes about 20–30 minutes.)
+    - If you are running your Pwnagotchi without the AI enabled, this is the mode you’ll stay in.
+  - AI: AI mode appears once the AI dependencies have finished loading and the neural network is functional.
+    - Once this appears, your Pwnagotchi is all ready to begin learning from its pwnage!
+- FRIEND DETECTED!: If another unit is nearby, its presence will be indicated between the bottom stats bar and your Pwnagotchi’s status face.
+>[!NOTE]
+> If more than one unit is nearby, only one—whichever has the stronger signal strength—will be displayed here.
+
+Another cool things about the Pwnagotchi is that it also servers a Pager. The *PwnMAIL* is as the website says:
+> crypto-pager!
+
+AND
+
+> Each message is encrypted on your Raspberry with the recipient RSA public key before being sent, therefore we only have access to encrypted data and we have absolutely no way to see the cleartext as it can only be done by the original recipient via his private key
+
+Just run *sudo pwngrid -whoami* to see your key.
+
+You can also check your webUI, there is a tab there just for checking your inbox
+```
+sudo pwngrid -inbox
+# and for all other pages if more than one
+sudo pwngrid -inbox -page 2
+```
+
+To fetch a message given its id (123 in this example), verify the sender signature and decryp it:
+```
+sudo pwngrid -inbox -id 123
+# in case you want to save the decrypted message body to a file
+sudo pwngrid -inbox -id 123 -output picture.jpg
+```
+
+This will automatically mark the message as read, to mark it back as unread:
+```
+sudo pwngrid -inbox -id 123 -unread
+```
+
+To delete it:
+```
+sudo pwngrid -inbox -id 123 -delete
+```
+
+And to send an encrypted message (max size is 512KB) to another unit having its fingerprint (ca1225b86dc35fef90922d83421d2fc9c824e95b864cfa62da7bea64ffb05aea in this example):
+```
+sudo pwngrid -send ca1225b86dc35fef90922d83421d2fc9c824e95b864cfa62da7bea64ffb05aea -message "hi there, how are you doing?"
+# in case you want to send a file instead
+sudo pwngrid -send ca1225b86dc35fef90922d83421d2fc9c824e95b864cfa62da7bea64ffb05aea -message @/path/to/file.jpg
+```
+>[!NOTE]
+> People use to send messages via just numbers, you can look them up, and if you use Goroawase, you are based
+
+![Sailor Moon being base](https://github.com/Cold-Syntax/Dumb-Down-Pwnagotchi-Guide/assets/85046345/7853118d-7072-45fe-b139-7cca8999345c)
+
+
+For SD card protection, the worst thing possible, in the *config.toml* put/enable
+```
+fs.memory.enabled = true
+fs.memory.mounts.log.enabled = true
+fs.memory.mounts.data.enabled = true
+```
+
+or if you are smarter than me
+```
+fs.memory.mounts.log.enabled = true     # switch
+fs.memory.mounts.log.mount = "/var/log" # which directory to map into memory
+fs.memory.mounts.log.size = "50M"       # max size to put into memory
+fs.memory.mounts.log.sync = 60          # interval in seconds to sync back onto disk
+fs.memory.mounts.log.zram = true        # use zram for compression (recommended)
+fs.memory.mounts.log.rsync = true       # use rsync to copy only the difference (recommended)
+```
+
+And lastly to Backup your Pwnagotchi
+```
+usage: ./scripts/backup.sh HOSTNAME backup.zip
+```
