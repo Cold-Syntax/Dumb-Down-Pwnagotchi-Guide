@@ -175,7 +175,7 @@ Once you got everything you need, time for...
 
 ## Step 2) Flash the image
 
-There are a few images out there, with the one I use is admittibly old. Version 1.5.5, but github user @jayofelony has been contantly been updating the project, thus earning Chad Status of being a parent to every script kiddies's favorite child, with the newest img file they have uploaded at the time of writing is 2.4.6, with Raspberry Pi 4 compatibility. I have provided both files mention in the repo. 
+There are a few images out there, with the one I use is admittibly old. [Version 1.5.5](https://github.com/wpa-2/pwnagotchi/releases) created by github user @wpa-2, but github user @jayofelony has been contantly been updating the project, thus earning Chad Status of being a parent to every script kiddies's favorite child, with the newest img file they have uploaded at the time of writing is [2.4.6](https://github.com/jayofelony/pwnagotchi/releases/tag/v2.4.6), with Raspberry Pi 4 compatibility. I have provided both files mention in the repo. 
 
 Next we need the software to go to Google and search for 'Balena Etcher' **AND PLEASE NOTE THE LINK, BECAUSE THERES OFTEN SOMEONE PUTTING A SCAM LINK, AND GOOGLE IS HAPPY TO RECOMMMEND IT OVER THE ACTUAL LINK**
 
@@ -345,6 +345,41 @@ Or head into the plugins tabs and enable *webcfg.py* and restart your Pwnagotchi
 But what's a plugin?
 
 ## Step 5) Plugins
+
+The pwnagotchi at it's bare minimum is nice but there are some built in plugins. If you recalled earlier eariler there was a plugin to edit the *config.toml* file, named *webcfg.py*. There was a plugin that allows bluetooth connection, otherwise known as *bt-tether.py*. The *memtemp.py* shows the usages of the memory and temputures.
+
+However there are more elaborate plugins such as *grid.py*, which is how:
+
+> signals the unit’s cryptographic identity and (optionally) a list of pwned networks to PwnGRID at api.pwnagotchi.ai.
+
+And you can see it in the offical [pwnagotchi](https://pwnagotchi.ai/map/) website, where they have a map updating on new friends.
+
+To add a little bit of *custom* personality, we can actually import plugins. If you go into your *config.toml* file and add:
+
+```
+main.custom_plugins = "/usr/local/share/pwnagotchi/custom-plugins/"
+```
+and
+```
+cd /usr/local/share/pwnagotchi/ && mkdir custom-plugins
+```
+
+>[!NOTE]
+> Some plugins requires certain installments of other things to run, and may even require an entire plugin, or API keys from 3rd party tools online, so read the documentations to be sure
+
+we can git clone community made plugins into the *custom-plugins* directory, and simple call it from the *config.toml* and restart the pwnagotchi to update it. Here is a set a plugins like:
+- [A plugin that will add a battery capacity and charging indicator for the Waveshare UPS HAT (C)](https://github.com/hannadiamond/pwnagotchi-plugins)
+- [A plugin that adds age and strength stats based on the number of epochs and the number of epochs trained](https://github.com/hannadiamond/pwnagotchi-plugins)
+- [XP bar for the pwnagotchi](https://github.com/GaelicThunder/Experience-Plugin-Pwnagotchi)
+
+![custom plugins](https://github.com/Cold-Syntax/Dumb-Down-Pwnagotchi-Guide/assets/85046345/b6b872a5-8a95-4fd2-992f-728866c1cad7)
+
+And if you think this is not that impressive, there are literal face lifts for pwnagotchis, where you get more impressive looks, such as Pikachu on your pwnagotchi. Now you can pwn WiFi while being sereved with cease and desist from Nintendo.
+
+[**WHO DOESN'T WANT TO HAVE A PIKACHU**](https://github.com/roodriiigooo/PWNAGOTCHI-CUSTOM-FACES-MOD)
+
+![Pikachu](https://github.com/Cold-Syntax/Dumb-Down-Pwnagotchi-Guide/assets/85046345/c1847c5f-1aff-49f6-8d59-3930aef0f72b)
+
 
 ## Things to know
 
